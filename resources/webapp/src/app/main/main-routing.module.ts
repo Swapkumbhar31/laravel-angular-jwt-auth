@@ -14,6 +14,10 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'profile',
+        loadChildren: () => import('../profile/profile.module').then(m => m.ProfileModule)
+      },
+      {
         path: '',
         loadChildren: () => import('../account/account.module').then(m => m.AccountModule)
       },

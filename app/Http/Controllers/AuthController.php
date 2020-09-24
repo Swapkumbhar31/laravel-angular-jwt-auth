@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -27,7 +28,7 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -42,7 +43,9 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        User::create($request->only('name', 'email', 'password'));
+        User::create(collect($request->only('name', 'email'))->merge([
+            'password'=> Hash::make($request->get('password'))
+        ])->toArray());
         $credentials = $request->only(['email', 'password']);
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
