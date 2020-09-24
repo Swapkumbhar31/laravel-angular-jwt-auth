@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/{any1?}/{any2?}/{any3?}/{any4?}/{any5?}', function () {
+    return \View::make('index');
 });
